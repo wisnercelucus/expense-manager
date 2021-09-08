@@ -19,13 +19,15 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.amber,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              // ignore: deprecated_member_use
-              title: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            // ignore: deprecated_member_use
+            title: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
+            button: TextStyle(
+              color: Colors.white,
+            )),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 // ignore: deprecated_member_use
@@ -60,12 +62,12 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         date: DateTime.now()),*/
   ];
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final transaction = Transaction(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
@@ -82,6 +84,12 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               behavior: HitTestBehavior.opaque,
               child: NewTransaction(_addNewTransaction));
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      transactions.removeWhere((element) => element.id == id);
+    });
   }
 
   @override
@@ -112,7 +120,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 elevation: 5,
               ),
             ),
-            TransactionList(transactions),
+            TransactionList(transactions, _deleteTransaction),
           ],
         ),
       ),
