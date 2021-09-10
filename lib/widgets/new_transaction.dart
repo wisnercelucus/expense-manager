@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'adaptive_flat_button.dart';
+
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
 
@@ -59,46 +61,48 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
-              onSubmitted: (_) => _onSubmitData(),
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _onSubmitData(),
-            ),
-            Row(
-              children: <Widget>[
-                Text(!_isNull(datePicked: datePicked)
-                    ? DateFormat.yMd().format(datePicked!)
-                    : "No date chosen"),
-                TextButton(
-                  style: TextButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
-                  onPressed: _launchDatePicker,
-                  child: Text("Chose a date"),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
-                onPrimary: Theme.of(context).textTheme.button!.color,
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: titleController,
+                onSubmitted: (_) => _onSubmitData(),
               ),
-              child: Text("Add transaction"),
-              onPressed: _onSubmitData,
-            )
-          ],
+              TextField(
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _onSubmitData(),
+              ),
+              Row(
+                children: <Widget>[
+                  Text(!_isNull(datePicked: datePicked)
+                      ? DateFormat.yMd().format(datePicked!)
+                      : "No date chosen"),
+                  AdaptiveFlatButton("Choose date", _launchDatePicker),
+                ],
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  onPrimary: Theme.of(context).textTheme.button!.color,
+                ),
+                child: Text("Add transaction"),
+                onPressed: _onSubmitData,
+              )
+            ],
+          ),
         ),
       ),
     );
